@@ -1,0 +1,1001 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java DSA Masterclass Dashboard</title>
+    <!-- Google Fonts: Outfit (Inter-like) & Fira Code (Monospace) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Default Dark Premium Theme */
+            --bg-color: #080c14;
+            --card-bg: #0f172a;
+            --card-border: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent-primary: #6366f1;
+            --accent-hover: #4f46e5;
+            --accent-glow: rgba(99, 102, 241, 0.15);
+            --easy-color: #10b981;
+            --medium-color: #f59e0b;
+            --hard-color: #ef4444;
+            --font-main: 'Outfit', sans-serif;
+            --font-mono: 'Fira Code', monospace;
+
+            --input-bg: #1e293b;
+            --pill-bg: #1e293b;
+            --pill-hover-bg: #334155;
+            --card-solved-bg: #0f172a;
+            --op-tag-bg: rgba(99, 102, 241, 0.08);
+            --op-tag-text: #a5b4fc;
+            --op-tag-border: rgba(99, 102, 241, 0.2);
+            --controls-bg: #0f172a;
+            --header-gradient: linear-gradient(135deg, #818cf8 0%, #6366f1 50%, #4f46e5 100%);
+            --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.06) 0px, transparent 50%);
+            --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --progress-track: #1e293b;
+        }
+
+        /* Light Theme Overrides */
+        body.light-theme {
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --card-border: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent-primary: #4f46e5;
+            --accent-hover: #3730a3;
+            --accent-glow: rgba(79, 70, 229, 0.06);
+            --input-bg: #ffffff;
+            --pill-bg: #f1f5f9;
+            --pill-hover-bg: #e2e8f0;
+            --card-solved-bg: #f8fafc;
+            --op-tag-bg: rgba(79, 70, 229, 0.05);
+            --op-tag-text: #4f46e5;
+            --op-tag-border: rgba(79, 70, 229, 0.1);
+            --controls-bg: #ffffff;
+            --header-gradient: linear-gradient(135deg, #4f46e5 0%, #312e81 100%);
+            --bg-gradient: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                           radial-gradient(at 100% 100%, rgba(99, 102, 241, 0.03) 0px, transparent 50%);
+            --shadow-premium: 0 4px 20px -2px rgba(148, 163, 184, 0.15);
+            --progress-track: #e2e8f0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.25s, border-color 0.25s, color 0.25s, transform 0.2s, box-shadow 0.25s;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            padding: 2.5rem 1.5rem;
+            min-height: 100vh;
+            background-image: var(--bg-gradient);
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Top Bar styling */
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+
+        .theme-toggle-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-family: var(--font-main);
+            font-weight: 600;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .theme-toggle-btn:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 12px var(--accent-glow);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: var(--header-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.05em;
+        }
+
+        header p {
+            color: var(--text-muted);
+            font-size: 1.25rem;
+            font-weight: 400;
+        }
+
+        /* Stats Section */
+        .stats-container {
+            margin-bottom: 3rem;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.25rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow-premium);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-primary);
+        }
+
+        .stat-card.easy::before { background: var(--easy-color); }
+        .stat-card.medium::before { background: var(--medium-color); }
+        .stat-card.hard::before { background: var(--hard-color); }
+        .stat-card.solved::before { background: var(--easy-color); }
+
+        .stat-val {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            color: var(--text-main);
+        }
+
+        .stat-lbl {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 600;
+        }
+
+        /* Progress Bar Widget */
+        .progress-widget {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.25rem;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .progress-title {
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .progress-percentage {
+            font-size: 1.25rem;
+            color: var(--accent-primary);
+            font-family: var(--font-mono);
+        }
+
+        .progress-track {
+            background: var(--progress-track);
+            height: 12px;
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            background: linear-gradient(90deg, var(--accent-primary) 0%, #818cf8 100%);
+            height: 100%;
+            width: 0%;
+            border-radius: 1rem;
+            box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+            transition: width 0.4s ease-out;
+        }
+
+        /* Controls Section */
+        .controls-wrapper {
+            background: var(--controls-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1.1rem 1.5rem;
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            color: var(--text-main);
+            font-family: var(--font-main);
+            font-size: 1.05rem;
+            outline: none;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-box input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+
+        .filter-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 0.6rem;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .pills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .pill {
+            background: var(--pill-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.5rem 1.1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .pill:hover {
+            background: var(--pill-hover-bg);
+            color: var(--text-main);
+        }
+
+        .pill.active {
+            background: var(--accent-primary);
+            color: white;
+            border-color: var(--accent-primary);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        .pill.easy-active.active {
+            background: var(--easy-color);
+            border-color: var(--easy-color);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        .pill.medium-active.active {
+            background: var(--medium-color);
+            border-color: var(--medium-color);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+        }
+
+        .pill.hard-active.active {
+            background: var(--hard-color);
+            border-color: var(--hard-color);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2);
+        }
+
+        .sort-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+
+        .sort-select {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 0.5rem 1rem;
+            border-radius: 0.75rem;
+            font-family: var(--font-main);
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .sort-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        /* List Layout */
+        .problems-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Problem Card (Container) */
+        .problem-wrapper {
+            display: flex;
+            flex-direction: column;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-premium);
+            overflow: hidden;
+        }
+
+        .problem-wrapper:hover {
+            border-color: var(--accent-primary);
+            box-shadow: 0 8px 24px var(--accent-glow);
+        }
+
+        .card-row {
+            padding: 1.25rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .card-left input[type="checkbox"] {
+            width: 1.35rem;
+            height: 1.35rem;
+            border-radius: 0.35rem;
+            border: 2px solid var(--card-border);
+            accent-color: var(--easy-color);
+            cursor: pointer;
+        }
+
+        .card-id {
+            background: var(--pill-bg);
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .card-center {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            min-width: 280px;
+        }
+
+        .card-title a {
+            color: var(--text-main);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .card-title a:hover {
+            color: var(--accent-primary);
+        }
+
+        .card-title a::after {
+            content: '↗';
+            font-size: 0.85rem;
+            opacity: 0.5;
+        }
+
+        .java-focus {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-style: italic;
+            border-left: 2px solid var(--card-border);
+            padding-left: 0.75rem;
+        }
+
+        .op-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .op-tag {
+            background: var(--op-tag-bg);
+            border: 1px solid var(--op-tag-border);
+            color: var(--op-tag-text);
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        .card-right {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.35rem 0.9rem;
+            border-radius: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.easy {
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--easy-color);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .badge.medium {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--medium-color);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .badge.hard {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--hard-color);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .hint-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: var(--font-main);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .hint-toggle-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent-primary);
+        }
+
+        /* Expandable Hint Drawer */
+        .hint-drawer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s cubic-bezier(0, 1, 0, 1);
+            background: rgba(99, 102, 241, 0.02);
+            border-top: 0px solid var(--card-border);
+        }
+
+        .hint-drawer.open {
+            max-height: 200px; /* arbitrary height to slide into */
+            transition: max-height 0.3s ease-in-out;
+            border-top: 1px solid var(--card-border);
+        }
+
+        .hint-content {
+            padding: 1.25rem 1.75rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .hint-section-title {
+            font-weight: 700;
+            color: var(--text-main);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .solved-card {
+            border-color: rgba(16, 185, 129, 0.25);
+            background: var(--card-solved-bg);
+        }
+
+        .solved-card .card-title a {
+            text-decoration: line-through;
+            opacity: 0.5;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 992px) {
+            .card-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+                padding: 1.25rem;
+            }
+
+            .card-center {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.75rem;
+                width: 100%;
+            }
+
+            .java-focus {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--card-border);
+                width: 100%;
+                padding-top: 0.5rem;
+            }
+
+            .card-right {
+                width: 100%;
+                justify-content: space-between;
+                border-top: 1px solid var(--card-border);
+                padding-top: 0.75rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            body {
+                padding: 1.5rem 1rem;
+            }
+
+            .filter-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .filter-label {
+                margin-top: 0;
+            }
+
+            .sort-select-wrapper {
+                margin-left: 0;
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Theme & Nav toggle -->
+        <div class="top-bar">
+            <button class="theme-toggle-btn" id="theme-toggle">
+                <span id="theme-icon">☀</span> <span id="theme-text">Light Mode</span>
+            </button>
+        </div>
+
+        <header>
+            <h1>Java DSA Masterclass Roadmap</h1>
+            <p>300 Curated LeetCode Problems Strategically Categorized to Master Data Structures & Algorithms</p>
+        </header>
+
+        <!-- Stats Widgets -->
+        <div class="stats-container">
+            <div class="stats-bar">
+                <div class="stat-card solved">
+                    <div class="stat-val" id="solved-count">0/300</div>
+                    <div class="stat-lbl">Completed</div>
+                </div>
+                <div class="stat-card easy">
+                    <div class="stat-val" id="easy-count">0/75</div>
+                    <div class="stat-lbl">Easy</div>
+                </div>
+                <div class="stat-card medium">
+                    <div class="stat-val" id="medium-count">0/185</div>
+                    <div class="stat-lbl">Medium</div>
+                </div>
+                <div class="stat-card hard">
+                    <div class="stat-val" id="hard-count">0/40</div>
+                    <div class="stat-lbl">Hard</div>
+                </div>
+            </div>
+
+            <!-- Overall linear percentage bar -->
+            <div class="progress-widget">
+                <div class="progress-header">
+                    <span class="progress-title">Overall Mastery Progress</span>
+                    <span class="progress-percentage" id="progress-percentage">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filters Box -->
+        <div class="controls-wrapper">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search by problem name, index ID, topic tags, or Java collections...">
+            </div>
+            
+            <div class="filter-groups">
+                <!-- Difficulty Filter -->
+                <div class="filter-group">
+                    <span class="filter-label">Difficulty</span>
+                    <div class="pills" id="difficulty-filters">
+                        <span class="pill active" data-filter="All">All</span>
+                        <span class="pill easy-active" data-filter="Easy">Easy</span>
+                        <span class="pill medium-active" data-filter="Medium">Medium</span>
+                        <span class="pill hard-active" data-filter="Hard">Hard</span>
+                    </div>
+                </div>
+
+                <!-- Topic Category Filter -->
+                <div class="filter-group">
+                    <span class="filter-label">DSA Topics</span>
+                    <div class="pills" id="topic-filters">
+                        <span class="pill active" data-filter="All">All</span>
+                        <span class="pill" data-filter="Arrays">Arrays & Basics</span>
+                        <span class="pill" data-filter="Strings">Strings</span>
+                        <span class="pill" data-filter="Two Pointers">Two Pointers</span>
+                        <span class="pill" data-filter="Sliding Window">Sliding Window</span>
+                        <span class="pill" data-filter="HashSet">HashSet</span>
+                        <span class="pill" data-filter="HashMap">HashMap</span>
+                        <span class="pill" data-filter="Prefix Sum">Prefix Sum & Matrix</span>
+                        <span class="pill" data-filter="LinkedList">Linked List</span>
+                        <span class="pill" data-filter="Stack">Stack</span>
+                        <span class="pill" data-filter="Queue">Queue</span>
+                        <span class="pill" data-filter="Heap">Heap & PQ</span>
+                        <span class="pill" data-filter="Backtracking">Recursion & Backtracking</span>
+                        <span class="pill" data-filter="Trees">Binary Trees & BST</span>
+                        <span class="pill" data-filter="Graphs">Graphs & DSU</span>
+                        <span class="pill" data-filter="Union-Find">Union-Find</span>
+                        <span class="pill" data-filter="Greedy">Greedy</span>
+                        <span class="pill" data-filter="Bit Manipulation">Bit Manipulation</span>
+                        <span class="pill" data-filter="Dynamic Programming">Dynamic Programming</span>
+                    </div>
+                </div>
+
+                <!-- Sort option -->
+                <div class="filter-group">
+                    <div class="sort-select-wrapper">
+                        <span class="filter-label" style="min-width: unset; margin-top: 0;">Sort by</span>
+                        <select class="sort-select" id="sort-select">
+                            <option value="id-asc">ID (Ascending)</option>
+                            <option value="id-desc">ID (Descending)</option>
+                            <option value="title-asc">Title (A-Z)</option>
+                            <option value="diff-asc">Difficulty (Easy first)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problems Render Container -->
+        <div class="problems-list" id="problems-list">
+            <!-- Dynamic Problem Items Rendered Here -->
+        </div>
+    </div>
+
+    <!-- External Questions Database File -->
+    <script src="dsa_questions.js"></script>
+
+    <script>
+        // Check if database loaded properly
+        const questionsList = typeof dsaQuestions !== 'undefined' ? dsaQuestions : [];
+
+        // Solved IDs list loaded from local storage
+        let solvedIds = JSON.parse(localStorage.getItem('dsa_master_solved_ids')) || [];
+
+        // DOM elements
+        const grid = document.getElementById('problems-list');
+        const searchInput = document.getElementById('search-input');
+        const difficultyFilters = document.getElementById('difficulty-filters');
+        const topicFilters = document.getElementById('topic-filters');
+        const sortSelect = document.getElementById('sort-select');
+        
+        // Progress widgets
+        const solvedCountVal = document.getElementById('solved-count');
+        const easyCountVal = document.getElementById('easy-count');
+        const mediumCountVal = document.getElementById('medium-count');
+        const hardCountVal = document.getElementById('hard-count');
+        const progressPercentage = document.getElementById('progress-percentage');
+        const progressFill = document.getElementById('progress-fill');
+
+        // Theme Toggle Elements
+        const themeBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const themeText = document.getElementById('theme-text');
+
+        // Current filter state
+        let selectedDifficulty = 'All';
+        let selectedTopic = 'All';
+
+        // Check user dark/light preference
+        if (localStorage.getItem('dsa_theme') === 'light') {
+            document.body.classList.add('light-theme');
+            themeIcon.textContent = '🌙';
+            themeText.textContent = 'Dark Mode';
+        }
+
+        // Toggle Theme
+        themeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('dsa_theme', isLight ? 'light' : 'dark');
+            themeIcon.textContent = isLight ? '🌙' : '☀';
+            themeText.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+        });
+
+        // Update Statistics Counters
+        function updateStats() {
+            const total = questionsList.length || 300;
+            const solvedTotalCount = solvedIds.length;
+            
+            // Calculate ratios
+            solvedCountVal.textContent = `${solvedTotalCount}/${total}`;
+            const percentage = Math.round((solvedTotalCount / total) * 100);
+            progressPercentage.textContent = `${percentage}%`;
+            progressFill.style.width = `${percentage}%`;
+
+            // Easy/Medium/Hard counts
+            const easyTotal = questionsList.filter(q => q.difficulty === 'Easy').length;
+            const mediumTotal = questionsList.filter(q => q.difficulty === 'Medium').length;
+            const hardTotal = questionsList.filter(q => q.difficulty === 'Hard').length;
+
+            const easySolvedCount = questionsList.filter(q => q.difficulty === 'Easy' && solvedIds.includes(q.id)).length;
+            const mediumSolvedCount = questionsList.filter(q => q.difficulty === 'Medium' && solvedIds.includes(q.id)).length;
+            const hardSolvedCount = questionsList.filter(q => q.difficulty === 'Hard' && solvedIds.includes(q.id)).length;
+
+            easyCountVal.textContent = `${easySolvedCount}/${easyTotal}`;
+            mediumCountVal.textContent = `${mediumSolvedCount}/${mediumTotal}`;
+            hardCountVal.textContent = `${hardSolvedCount}/${hardTotal}`;
+        }
+
+        // Toggle Checked Complete
+        function toggleSolved(id) {
+            const index = solvedIds.indexOf(id);
+            if (index > -1) {
+                solvedIds.splice(index, 1);
+            } else {
+                solvedIds.push(id);
+            }
+            localStorage.setItem('dsa_master_solved_ids', JSON.stringify(solvedIds));
+            updateStats();
+            
+            // Sync current card visual solved state without full redrawing list (preserves open drawers!)
+            const cardEl = document.getElementById(`wrapper-${id}`);
+            if (cardEl) {
+                if (solvedIds.includes(id)) {
+                    cardEl.classList.add('solved-card');
+                } else {
+                    cardEl.classList.remove('solved-card');
+                }
+            }
+        }
+
+        // Toggle Expandable Hint Drawer
+        function toggleHint(id) {
+            const drawer = document.getElementById(`hint-${id}`);
+            const btn = document.getElementById(`btn-${id}`);
+            if (drawer) {
+                drawer.classList.toggle('open');
+                const isOpen = drawer.classList.contains('open');
+                btn.innerHTML = isOpen 
+                    ? `💡 Hide Hint` 
+                    : `💡 Show Hint & Java Tip`;
+            }
+        }
+
+        // Filter and Render logic
+        function render() {
+            grid.innerHTML = '';
+            const query = searchInput.value.toLowerCase().trim();
+            const sortBy = sortSelect.value;
+
+            // Apply filter chain
+            let filtered = questionsList.filter(q => {
+                const matchesSearch = q.title.toLowerCase().includes(query) ||
+                    q.id.toString() === query ||
+                    q.focus.toLowerCase().includes(query) ||
+                    q.hint.toLowerCase().includes(query) ||
+                    q.topics.some(t => t.toLowerCase().includes(query));
+
+                const matchesDifficulty = selectedDifficulty === 'All' || q.difficulty === selectedDifficulty;
+                
+                const matchesTopic = selectedTopic === 'All' || q.topics.includes(selectedTopic);
+
+                return matchesSearch && matchesDifficulty && matchesTopic;
+            });
+
+            // Apply Sort
+            filtered.sort((a, b) => {
+                if (sortBy === 'id-asc') return a.id - b.id;
+                if (sortBy === 'id-desc') return b.id - a.id;
+                if (sortBy === 'title-asc') return a.title.localeCompare(b.title);
+                if (sortBy === 'diff-asc') {
+                    const weight = { 'Easy': 1, 'Medium': 2, 'Hard': 3 };
+                    return weight[a.difficulty] - weight[b.difficulty] || a.id - b.id;
+                }
+                return 0;
+            });
+
+            // Display Empty Warning
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align: center; color: var(--text-muted); padding: 4rem 2rem; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 1rem; box-shadow: var(--shadow-premium);">
+                        <p style="font-size: 1.15rem; font-weight: 500;">No DSA questions match your search or filter rules.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem; opacity: 0.8;">Try search words like "HashMap", "Sorting", or clear active filters.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Create fragment to optimize bulk DOM append
+            const fragment = document.createDocumentFragment();
+
+            filtered.forEach(q => {
+                const isSolved = solvedIds.includes(q.id);
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = `problem-wrapper ${isSolved ? 'solved-card' : ''}`;
+                wrapper.id = `wrapper-${q.id}`;
+
+                wrapper.innerHTML = `
+                    <div class="card-row">
+                        <div class="card-left">
+                            <input type="checkbox" ${isSolved ? 'checked' : ''} onchange="toggleSolved(${q.id})">
+                            <span class="card-id">#${q.id}</span>
+                        </div>
+                        <div class="card-center">
+                            <div class="card-title">
+                                <a href="${q.link}" target="_blank" rel="noopener noreferrer">${q.title}</a>
+                            </div>
+                            <span class="java-focus" title="Java specific advice">${q.focus}</span>
+                            <div class="op-tags">
+                                ${q.topics.map(t => `<span class="op-tag">${t}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="card-right">
+                            <span class="badge ${q.difficulty.toLowerCase()}">${q.difficulty}</span>
+                            <button class="hint-toggle-btn" id="btn-${q.id}" onclick="toggleHint(${q.id})">
+                                💡 Show Hint & Java Tip
+                            </button>
+                        </div>
+                    </div>
+                    <div class="hint-drawer" id="hint-${q.id}">
+                        <div class="hint-content">
+                            <div>
+                                <span class="hint-section-title">🔑 Algorithmic Strategy</span>
+                                <p style="margin-top: 0.25rem;">${q.hint}</p>
+                            </div>
+                            <div style="margin-top: 0.5rem;">
+                                <span class="hint-section-title">☕ Java API / Framework Integration</span>
+                                <p style="margin-top: 0.25rem; font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-primary);">${q.focus}</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                fragment.appendChild(wrapper);
+            });
+
+            grid.appendChild(fragment);
+        }
+
+        // Setup filter click listeners
+        function setupEventListeners() {
+            // Difficulty Pills selection
+            difficultyFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('pill')) {
+                    difficultyFilters.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                    e.target.classList.add('active');
+                    selectedDifficulty = e.target.getAttribute('data-filter');
+                    render();
+                }
+            });
+
+            // Topics Pills selection
+            topicFilters.addEventListener('click', (e) => {
+                if (e.target.classList.contains('pill')) {
+                    topicFilters.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+                    e.target.classList.add('active');
+                    selectedTopic = e.target.getAttribute('data-filter');
+                    render();
+                }
+            });
+
+            // Search inputs
+            searchInput.addEventListener('input', render);
+
+            // Sorting selects
+            sortSelect.addEventListener('change', render);
+        }
+
+        // Init App
+        setupEventListeners();
+        updateStats();
+        render();
+    </script>
+</body>
+
+</html>
