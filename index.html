@@ -645,12 +645,12 @@
     </style>
 </head>
 
-<body>
+<body class="light-theme">
     <div class="container">
         <!-- Theme & Nav toggle -->
         <div class="top-bar">
             <button class="theme-toggle-btn" id="theme-toggle">
-                <span id="theme-icon">☀</span> <span id="theme-text">Light Mode</span>
+                <span id="theme-icon">🌙</span> <span id="theme-text">Dark Mode</span>
             </button>
         </div>
 
@@ -791,11 +791,11 @@
         let selectedDifficulty = 'All';
         let selectedTopic = 'All';
 
-        // Check user dark/light preference
-        if (localStorage.getItem('dsa_theme') === 'light') {
-            document.body.classList.add('light-theme');
-            themeIcon.textContent = '🌙';
-            themeText.textContent = 'Dark Mode';
+        // Check user dark/light preference (default is light theme)
+        if (localStorage.getItem('dsa_theme') === 'dark') {
+            document.body.classList.remove('light-theme');
+            themeIcon.textContent = '☀';
+            themeText.textContent = 'Light Mode';
         }
 
         // Toggle Theme
